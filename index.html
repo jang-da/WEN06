@@ -33,6 +33,7 @@
         :root {
             --c-white: #FFFFFF;
             --c-light-gray: #E4E7EC;
+            --c-sky-blue: #A8D5E2;
             --c-orange-red: #FF4A28;
             --c-black: #000000;
             --f-primary: 'Noto Sans KR', sans-serif;
@@ -51,8 +52,8 @@
 
 
         #main-content {
-            background-color: var(--c-white);
-            color: var(--c-text-primary);
+            background-color: var(--c-black);
+            color: var(--c-sky-blue);
         }
 
 
@@ -73,47 +74,62 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 40px;
-            background-color: rgba(255, 255, 255, 0.98); /* 반투명 흰색 배경 */
+            background-color: rgba(0, 0, 0, 0.9); /* 반투명 검은색 배경 */
             backdrop-filter: blur(10px); /* 배경 블러 효과 (모던한 느낌) */
             z-index: 1000; /* 다른 요소들 위에 오도록 설정 */
-            border-bottom: 1px solid var(--c-light-gray); /* 밝은 구분선 */
+            border-bottom: 1px solid #333; /* 어두운 구분선 */
         }
 
         .site-header .logo a {
              font-family: var(--f-display);
              font-size: 1.5rem;
              font-weight: 400;
-             color: var(--c-black); /* 로고 색상 검은색으로 변경 */
+             color: var(--c-sky-blue); /* 로고 색상 변경 */
              text-decoration: none;
              letter-spacing: 0.1rem;
              transition: color 0.3s ease;
         }
 
         .site-header .logo a:hover {
-            color: var(--c-orange-red);
+            opacity: 0.7; /* 호버 시 투명도 변경 */
+        }
+
+        .site-header .logo img {
+            height: 36px; /* 로고 이미지 높이 설정 */
+            filter: invert(81%) sepia(15%) saturate(545%) hue-rotate(149deg) brightness(92%) contrast(91%); /* 로고 색상 변경 */
+            transition: opacity 0.3s ease;
         }
 
         .site-header nav {
             display: flex;
-            gap: 8px;
+            border: 1px solid var(--c-sky-blue);
+            border-radius: 10px;
+            overflow: hidden; /* 자식 요소가 부모의 둥근 모서리를 넘지 않도록 함 */
+            gap: 8px; /* 버튼 사이 간격 추가 */
         }
 
         .site-header nav a {
             font-family: var(--f-primary);
             font-size: 1rem;
             font-weight: 400;
-            color: var(--c-black); /* 네비게이션 기본 색상 검은색으로 변경 */
+            color: var(--c-sky-blue); /* 네비게이션 기본 색상 변경 */
             text-decoration: none;
             padding: 8px 16px;
-            border: 1px solid transparent;
+            border-radius: 5px; /* 개별 버튼의 모서리를 살짝 둥글게 */
+        }
+
+        #theme-toggle-btn {
+            cursor: pointer; /* 클릭 가능하도록 커서 변경 */
+        }
+
+        .site-header nav a {
             transition: all 0.2s ease;
         }
         
         .site-header nav a:hover,
         .site-header nav a.active {
-            border-color: var(--c-black);
-            background-color: var(--c-black);
-            color: var(--c-white);
+            background-color: var(--c-sky-blue);
+            color: var(--c-black);
         }
 
         /* Container for content sections */
@@ -126,11 +142,11 @@
         .site-header nav img {
             height: 20px; /* 네비게이션 이미지 높이 설정 */
             vertical-align: middle; /* 이미지가 링크 중앙에 오도록 정렬 */
-            filter: none; /* 이미지 색상 반전 제거 */
+            filter: invert(81%) sepia(15%) saturate(545%) hue-rotate(149deg) brightness(92%) contrast(91%); /* 아이콘 색상 변경 */
         }
 
         .site-header nav a:hover img, .site-header nav a.active img {
-            filter: invert(1); /* 호버/활성 시 이미지를 흰색으로 변경 */
+            filter: none; /* 호버/활성 시 원래 색상(검은색)으로 돌아오도록 필터 제거 */
         }
 
         /* 메인 페이지에서는 로고를 active 상태처럼 보이게 할 수 있습니다. */
@@ -188,7 +204,7 @@
         .image-box {
             width: 400px; /* 너비 조정 */
             height: 690px;
-            border: 1px solid var(--c-black); /* 테두리 검은색으로 변경 */
+            border: 1px solid var(--c-sky-blue); /* 테두리 색상 변경 */
             box-sizing: border-box; /* 테두리를 크기에 포함 */
         }
         .image-box-wrapper {
@@ -213,7 +229,7 @@
         /* Info Sections (from info.html) */
         .info-section {
             padding: 80px 0;
-            border-bottom: 1px solid var(--c-light-gray); /* 밝은 구분선 */
+            border-bottom: 1px solid #333; /* 어두운 구분선 */
         }
 
         .info-section:last-of-type {
@@ -223,7 +239,7 @@
         .info-section h2 {
             font-family: var(--f-display);
             font-size: 2.5rem;
-            color: var(--c-black); /* 제목 검은색으로 변경 */
+            color: var(--c-sky-blue); /* 제목 색상 변경 */
             margin-bottom: 30px;
             text-align: center;
         }
@@ -247,7 +263,7 @@
             justify-content: space-between; /* 양쪽 끝으로 정렬 */
             align-items: flex-start; /* 상단 정렬 */
             padding: 20px 0; /* 상하 패딩만 적용 */
-            border-top: 1px solid var(--c-light-gray); /* 밝은 구분선 */
+            border-top: 1px solid #333; /* 어두운 구분선 */
         }
 
         .info-item:last-child {
@@ -257,13 +273,13 @@
         .info-item h3 {
             font-family: var(--f-primary);
             font-size: 1.3rem; /* 제목 폰트 크기 조정 */
-            color: var(--c-black); /* 항목 제목 검은색으로 변경 */
+            color: var(--c-sky-blue); /* 항목 제목 색상 변경 */
             margin-bottom: 15px;
         }
 
         .info-item p {
             font-size: 1rem;
-            color: var(--c-text-primary); /* 본문 텍스트 색상 변경 */
+            color: var(--c-sky-blue); /* 본문 텍스트 색상 변경 */
             line-height: 1.7;
         }
 
@@ -301,10 +317,10 @@
 
         /* Footer (from info.html) */
         footer {
-            background: var(--c-white);
-            color: var(--c-black);
+            background: var(--c-black);
+            color: var(--c-sky-blue);
             padding: 50px 0;
-            border-top: 1px solid var(--c-light-gray);
+            border-top: 1px solid #333;
         }
 
         footer .footer-content {
@@ -356,10 +372,15 @@
                 gap: 40px;
                 text-align: center;
             }
+            .left-panel {
+                margin-left: 0; /* 모바일에서 왼쪽 여백 제거 */
+            }
             .right-text-panel {
                 width: 100%;
                 max-width: 500px; /* 텍스트 최대 너비 제한 */
                 padding-top: 0;
+                margin-top: 0;
+                margin-left: 0; /* 모바일에서 왼쪽 여백 제거 */
                 text-align: center;
             }
             .image-box-wrapper > h2 {
@@ -400,33 +421,34 @@
           - absolute: 부모(메인 컨테이너)를 기준으로 위치
         -->
         <!-- 상단 패널 (Z-index: 20) -->
-        <div id="panelTop" class="absolute top-0 left-0 w-full h-1/2 bg-white z-20 flex items-end justify-center overflow-hidden pb-8">
+        <div id="panelTop" class="absolute top-0 left-0 w-full h-1/2 bg-black z-20 flex items-end justify-center overflow-hidden pb-8">
             <div class="flex items-center space-x-4 text-2xl font-bold">
-                <span id="codeText" class="text-black">CODE</span>
-                <span id="slashText" class="text-gray-800">/</span>
-                <span id="projectText" class="text-black">PROJECT</span>
+                <span id="codeText" class="text-sky-200">CODE</span>
+                <span id="slashText" class="text-gray-400">/</span>
+                <span id="projectText" class="text-sky-200">PROJECT</span>
             </div>
         </div>
         
         <!-- 하단 패널 (Z-index: 20) -->
-        <div id="panelBottom" class="absolute bottom-0 left-0 w-full h-1/2 bg-white z-20"></div>
+        <div id="panelBottom" class="absolute bottom-0 left-0 w-full h-1/2 bg-black z-20"></div>
     </div>
     <!-- Main Content (initially hidden) -->
     <div id="main-content">
         <!-- Site Header -->
         <header class="site-header">
             <div class="logo">
-                <a href="index.html" class="active">CODE.</a>
+                <a href="index.html" class="active"><img src="images/logo.png" alt="CODE. Logo"></a>
             </div>
             <nav>
-                <a href="project.html"><img src="project.png" alt="Projects"></a>
-                <a href="profile.html"><img src="artist.png" alt="Artists"></a>
+                <a href="project.html"><img src="images/project.png" alt="Projects" /></a>
+                <a href="profile.html"><img src="images/artist.png" alt="Artists" /></a>
+                <a id="theme-toggle-btn">Theme</a>
             </nav>
         </header>
 
         <!-- Main Image Section -->
         <div class="main-image-container">
-            <img src="mainimage2.png" alt="CODE. Main Visual" style="width: 100%; height: auto; display: block;">
+            <img src="images/mainimage2.png" alt="CODE. Main Visual" style="width: 100%; height: auto; display: block;">
         </div>
 
 
@@ -623,6 +645,70 @@
                 yPercent: 100,
                 ease: "power3.inOut"
             }, "<"); 
+
+            // --- 테마 전환 로직 ---
+            const themeToggleButton = document.getElementById('theme-toggle-btn');
+            let isDarkMode = true;
+
+            themeToggleButton.addEventListener('click', () => {
+                isDarkMode = !isDarkMode;
+
+                const DURATION = 0.5;
+                const EASE = "power2.inOut";
+
+                const darkColors = {
+                    bg: getComputedStyle(document.documentElement).getPropertyValue('--c-black').trim(),
+                    text: getComputedStyle(document.documentElement).getPropertyValue('--c-sky-blue').trim(),
+                    border: '#333',
+                    headerBg: 'rgba(0, 0, 0, 0.9)',
+                    navBorder: getComputedStyle(document.documentElement).getPropertyValue('--c-sky-blue').trim(),
+                    logoFilter: 'invert(81%) sepia(15%) saturate(545%) hue-rotate(149deg) brightness(92%) contrast(91%)',
+                    iconFilter: 'invert(81%) sepia(15%) saturate(545%) hue-rotate(149deg) brightness(92%) contrast(91%)'
+                };
+
+                const lightColors = {
+                    bg: getComputedStyle(document.documentElement).getPropertyValue('--c-white').trim(),
+                    text: getComputedStyle(document.documentElement).getPropertyValue('--c-text-primary').trim(),
+                    border: getComputedStyle(document.documentElement).getPropertyValue('--c-light-gray').trim(),
+                    headerBg: 'rgba(255, 255, 255, 0.98)',
+                    navBorder: '#EFEFEF',
+                    logoFilter: 'none',
+                    iconFilter: 'none'
+                };
+
+                const targetColors = isDarkMode ? darkColors : lightColors;
+
+                // 헤더 GNB 색상 전환
+                gsap.to(".site-header", { backgroundColor: targetColors.headerBg, borderBottomColor: targetColors.border, duration: DURATION, ease: EASE });
+                gsap.to(".site-header .logo img", { filter: targetColors.logoFilter, duration: DURATION, ease: EASE });
+                gsap.to(".site-header nav", { borderColor: targetColors.navBorder, duration: DURATION, ease: EASE });
+                gsap.to(".site-header nav a", { color: targetColors.text, duration: DURATION, ease: EASE });
+                gsap.to(".site-header nav img", { filter: targetColors.iconFilter, duration: DURATION, ease: EASE });
+
+                // GSAP를 사용하여 색상 전환 애니메이션
+                gsap.to("#main-content, footer", {
+                    backgroundColor: targetColors.bg,
+                    color: targetColors.text,
+                    duration: DURATION,
+                    ease: EASE
+                });
+
+                gsap.to(".info-item, .info-section, footer", {
+                    borderColor: targetColors.border,
+                    duration: DURATION,
+                    ease: EASE
+                });
+
+                gsap.to(".info-section h2, .info-item h3, .info-item p", {
+                    color: targetColors.text,
+                    duration: DURATION,
+                    ease: EASE
+                });
+
+                // About 섹션 텍스트 및 테두리 색상 전환
+                gsap.to(".about-container p, .about-container h2", { color: targetColors.text, duration: DURATION, ease: EASE });
+                gsap.to(".image-box", { borderColor: targetColors.navBorder, duration: DURATION, ease: EASE });
+            });
         });
     </script>
 </body>

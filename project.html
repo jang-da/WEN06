@@ -384,6 +384,8 @@
             <nav>
                 <a href="project.html" class="active"><img src="project.png" alt="Projects"></a>
                 <a href="profile.html"><img src="artist.png" alt="Artists"></a>
+                <a href="project.html" class="active"><img src="images/project.png" alt="Projects"></a>
+                <a href="profile.html"><img src="images/artist.png" alt="Artists"></a>
             </nav>
     </header>
 
@@ -534,6 +536,7 @@
                     card.innerHTML = `
                         <div class="profile-image-wrapper">
                             <img class="profile-image" src="${student.image}" alt="${student.name} 프로필 이미지">
+                            <img class="profile-image" src="images/${student.image}" alt="${student.name} 프로필 이미지">
                             </div>
                         <div class="profile-content">
                             <div class="profile-header">
