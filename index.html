@@ -52,8 +52,8 @@
 
 
         #main-content {
-            background-color: var(--c-black);
-            color: var(--c-sky-blue);
+            position: relative; /* z-index 컨텍스트를 위해 추가 */
+            background-color: var(--c-black); color: var(--c-sky-blue); z-index: 0;
         }
 
 
@@ -325,7 +325,7 @@
             border-top: 1px solid #333;
         }
 
-        footer .footer-content {
+        footer .footer-content { 
             display: flex;
             justify-content: space-between;
             max-width: 1800px;
@@ -343,21 +343,6 @@
         footer .footer-section p {
             opacity: 0.8;
             font-size: 0.9rem;
-        }
-
-        /* Responsive for Info Sections and Footer */
-        @media (max-width: 768px) {
-            .info-section { padding: 60px 0; }
-            .info-section h2 { font-size: 2rem; }
-            .info-section .content-grid {
-                padding: 0 20px; /* 모바일에서 좌우 여백 추가 */
-            }
-            .info-item { padding: 25px; }
-            .info-item h3 { font-size: 1.3rem; }
-            footer .footer-content { flex-direction: column; gap: 30px; text-align: center; }
-        }
-        @media (max-width: 480px) {
-            .info-section h2 { font-size: 1.8rem; }
         }
 
         /* Scroll to Top Button */
@@ -383,32 +368,30 @@
         }
     </style>
     <style>
-        /* --- 반응형 디자인을 위한 미디어 쿼리 --- */
-
-        /* 태블릿 및 소형 데스크탑 (1024px 이하) */
+        /* --- 반응형 디자인 --- */
         @media (max-width: 1024px) {
             .content-section {
                 padding: 80px 40px;
             }
             .about-container {
-                flex-direction: column; /* 세로로 쌓기 */
-                align-items: center; /* 중앙 정렬 */
+                flex-direction: column;
+                align-items: center;
                 gap: 40px;
                 text-align: center;
             }
             .left-panel {
-                margin-left: 0; /* 모바일에서 왼쪽 여백 제거 */
+                margin-left: 0;
             }
             .right-text-panel {
                 width: 100%;
-                max-width: 500px; /* 텍스트 최대 너비 제한 */
+                max-width: 500px;
                 padding-top: 0;
                 margin-top: 0;
-                margin-left: 0; /* 모바일에서 왼쪽 여백 제거 */
+                margin-left: 0;
                 text-align: center;
             }
             .image-box-wrapper > h2 {
-                position: static; /* static으로 변경하여 흐름에 맞게 배치 */
+                position: static;
                 margin-top: 20px;
             }
             .image-box-wrapper > p {
@@ -418,10 +401,13 @@
             }
         }
 
-        /* 모바일 (768px 이하) */
         @media (max-width: 768px) {
             .site-header { padding: 15px 20px; }
             .site-header .logo a { font-size: 1.2rem; }
+            .site-header nav { gap: 4px; }
+            .site-header nav a {
+                padding: 6px 12px;
+            }
 
             .content-section { padding: 60px 20px; }
 
@@ -430,25 +416,50 @@
                 height: 520px;
             }
 
+            .info-section { padding: 60px 0; }
+            .info-section h2 { font-size: 2rem; }
+            .info-section .content-grid {
+                padding: 0 20px;
+            }
             .info-row {
-                flex-direction: column; /* 4개 항목 세로로 쌓기 */
+                flex-direction: column;
                 gap: 0;
             }
 
-            /* heavy-file.html의 아스키 아트 반응형 처리 */
-            #tiresult {
-                transform: scale(0.3); /* 모바일에서 크기 축소 */
-                transform-origin: top left; /* 왼쪽 상단을 기준으로 축소 */
-                height: 30vh; /* 축소된 크기에 맞게 높이 조절 */
-                margin-bottom: -70vh; /* 축소로 인해 생긴 하단 공백 제거 */
+            .info-item { 
+                padding: 25px 0;
+                width: 100%;
             }
+            .info-item h3 { font-size: 1.3rem; }
+
+            footer .footer-content { flex-direction: column; gap: 30px; text-align: center; }
+
+            /* 아스키 아트 반응형 처리 */
+            #content-placeholder {
+                position: absolute; /* 문서 흐름에서 제외 */
+                top: 0;
+                left: 0;
+                z-index: 1; /* 메인 콘텐츠 위에 오도록 설정 */
+                opacity: 0.05; /* 다른 콘텐츠와 겹쳐도 보이도록 투명도 조절 */
+                transform: scale(0.5); /* 크기 조정 */
+                transform-origin: top left; /* 왼쪽 상단을 기준으로 축소 */
+                overflow: hidden;
+                pointer-events: none; /* 아트가 클릭되지 않도록 설정 */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .right-text-panel p {
+                font-size: 14px;
+            }
+            .info-section h2 { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
-    <div id="content-placeholder">
 
-    </div>
+<div id="content-placeholder"></div>
+
     <!-- Intro Animation Container -->
     <div id="intro-container">
         <!-- 
@@ -480,12 +491,6 @@
                 <a id="theme-toggle-btn">Theme</a>
             </nav>
         </header>
-
-        <!-- Main Image Section -->
-        <div class="main-image-container">
-            <img src="images/mainimage2.png" alt="CODE. Main Visual" style="width: 100%; height: auto; display: block;">
-        </div>
-
 
         <div id="about" class="container">
             <div class="content-section">
@@ -587,26 +592,10 @@
     </div>
 
     <!-- Scroll to Top Button -->
-     <script>
-        // 페이지가 로드되면 실행
-        document.addEventListener("DOMContentLoaded", function() {
-            // 1. 'heavy-file.html' 파일 내용을 가져옵니다.
-            fetch('heavy-file.html')
-                .then(response => response.text()) // 텍스트로 변환
-                .then(htmlContent => {
-                    // 2. id="content-placeholder"인 div를 찾아서
-                    // 3. 그 안에 가져온 HTML 내용을 넣습니다.
-                    document.getElementById('content-placeholder').innerHTML = htmlContent;
-                })
-                .catch(error => {
-                    // 오류 발생 시
-                    console.error('파일을 불러오는 중 오류 발생:', error);
-                    document.getElementById('content-placeholder').innerHTML = '<p>콘텐츠를 불러오는데 실패했습니다.</p>';
-                });
-        });
-    </script>
     <button id="scrollTopBtn" title="Go to top">↑</button>
 
+    <!-- 분리된 스크립트 파일 로드 -->
+    <script src="loadContent.js"></script>
     <script src="intro-animation.js"></script>
     <script src="theme-transition.js"></script>
     <script src="scroll-to-top.js"></script>
