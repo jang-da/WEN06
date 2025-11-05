@@ -95,6 +95,7 @@
         }
 
         .site-header .logo img {
+            height: 50px; /* 로고 이미지 높이 설정 */
             height: 36px; /* 로고 이미지 높이 설정 */
             filter: invert(81%) sepia(15%) saturate(545%) hue-rotate(149deg) brightness(92%) contrast(91%); /* 로고 색상 변경 */
             transition: opacity 0.3s ease;
@@ -433,10 +434,21 @@
                 flex-direction: column; /* 4개 항목 세로로 쌓기 */
                 gap: 0;
             }
+
+            /* heavy-file.html의 아스키 아트 반응형 처리 */
+            #tiresult {
+                transform: scale(0.3); /* 모바일에서 크기 축소 */
+                transform-origin: top left; /* 왼쪽 상단을 기준으로 축소 */
+                height: 30vh; /* 축소된 크기에 맞게 높이 조절 */
+                margin-bottom: -70vh; /* 축소로 인해 생긴 하단 공백 제거 */
+            }
         }
     </style>
 </head>
 <body>
+    <div id="content-placeholder">
+
+    </div>
     <!-- Intro Animation Container -->
     <div id="intro-container">
         <!-- 
@@ -575,197 +587,29 @@
     </div>
 
     <!-- Scroll to Top Button -->
-    <button id="scrollTopBtn" title="Go to top">↑</button>
-
-    <script>
-        // DOM 콘텐츠가 모두 로드되면 스크립트 실행
-        document.addEventListener("DOMContentLoaded", () => {
-            const mainContent = document.getElementById('main-content');
-            const introContainer = document.getElementById('intro-container');
-            
-            // Hide main content initially
-            gsap.set(mainContent, { autoAlpha: 0 }); // 인트로 중 메인 콘텐츠 숨기기
-            
-            // 인트로 애니메이션 동안 스크롤 방지
-            document.documentElement.style.overflow = 'hidden'; // <html> 스크롤 방지
-            document.body.style.overflow = 'hidden'; // <body> 스크롤 방지
-            
-            // 1. 요소들의 초기 상태 설정
-            gsap.set("#panelTop", { yPercent: 0 });
-            gsap.set("#panelBottom", { yPercent: 0 });
-
-            // 상단 패널 내부 텍스트들의 초기 상태 설정 (투명하고 중앙에 위치)
-            gsap.set(["#codeText", "#slashText", "#projectText"], { autoAlpha: 0 }); // 모든 텍스트 초기 투명
-            
-            // 텍스트 이동 거리를 동적으로 계산하기 위해 요소 참조
-            const panelTop = document.getElementById('panelTop');
-            const codeText = document.getElementById('codeText');
-            const projectText = document.getElementById('projectText');
-
-            // 2. GSAP 타임라인 생성, onComplete 콜백 추가
-            const tl = gsap.timeline({
-                onComplete: () => {
-                    // Animation is complete
-                    gsap.to(introContainer, { 
-                        autoAlpha: 0, 
-                        duration: 0.5,
-                        onComplete: () => introContainer.style.display = 'none' 
-                    });
-                    gsap.to(mainContent, { autoAlpha: 1, duration: 0.5, delay: 0.2 });
-                    document.documentElement.style.overflow = ''; // <html> 스크롤 복원
-                    document.body.style.overflow = ''; // <body> 스크롤 복원
-                }
-            });
-
-            // 3. 타임라인에 애니메이션 추가
-            
-            // (1) 텍스트가 페이드인 되면서 중앙에 나타나는 애니메이션
-            tl.to(["#codeText", "#slashText", "#projectText"], {
-                duration: 0.8,
-                autoAlpha: 1,
-                ease: "power2.out"
-            });
-
-            // (2) CODE와 ARTIST 텍스트가 좌우 가장자리로 이동하며 사라지는 반응형 애니메이션
-            //     "-=0.4" : 이전 텍스트 페이드인 애니메이션이 끝나기 0.4초 전에 시작
-            tl.to(codeText, {
-                duration: 1,
-                x: () => {
-                    // 패널의 왼쪽 끝 viewport 좌표
-                    const panelLeft = panelTop.getBoundingClientRect().left;
-                    // 텍스트의 현재 오른쪽 끝 viewport 좌표
-                    const codeRight = codeText.getBoundingClientRect().right;
-                    // (패널 왼쪽 끝) - (텍스트 오른쪽 끝) = 텍스트가 이동할 픽셀 거리
-                    // 텍스트의 오른쪽이 패널의 왼쪽 끝에 닿으면서 overflow-hidden으로 사라짐
-                    return panelLeft - codeRight - 10; // Add a small buffer
-                },
-                ease: "power3.inOut"
-            }, "-=0.4"); 
-
-            tl.to(projectText, {
-                duration: 1,
-                x: () => {
-                    // 패널의 오른쪽 끝 viewport 좌표
-                    const panelRight = panelTop.getBoundingClientRect().right;
-                    // 텍스트의 현재 왼쪽 끝 viewport 좌표
-                    const projectLeft = projectText.getBoundingClientRect().left;
-                    // (패널 오른쪽 끝) - (텍스트 왼쪽 끝) = 텍스트가 이동할 픽셀 거리
-                    // 텍스트의 왼쪽이 패널의 오른쪽 끝에 닿으면서 overflow-hidden으로 사라짐
-                    return panelRight - projectLeft + 10; // Add a small buffer
-                },
-                ease: "power3.inOut"
-            }, "<"); // 이전 CODE 애니메이션과 동시에 시작
-            
-            // (3) 상단 패널(#panelTop)이 1.2초 동안 위(yPercent: -100)로 슬라이드
-            //     "+=0.5" : 텍스트 이동 애니메이션이 끝난 후 0.5초 딜레이
-            tl.to("#panelTop", {
-                duration: 1.2,
-                yPercent: -100,
-                ease: "power3.inOut" 
-            }, "+=0.5"); // 텍스트 이동이 끝난 후 0.5초 뒤에 시작
-
-            // (4) 하단 패널(#panelBottom)이 1.2초 동안 아래(yPercent: 100)로 슬라이드
-            //     "<" : 앞선 애니메이션(panelTop)과 *동시에* 시작
-            tl.to("#panelBottom", {
-                duration: 1.2,
-                yPercent: 100,
-                ease: "power3.inOut"
-            }, "<"); 
-
-            // --- 테마 전환 로직 ---
-            const themeToggleButton = document.getElementById('theme-toggle-btn');
-            let isDarkMode = true;
-
-            themeToggleButton.addEventListener('click', () => {
-                isDarkMode = !isDarkMode;
-
-                const DURATION = 0.5;
-                const EASE = "power2.inOut";
-
-                const darkColors = {
-                    bg: getComputedStyle(document.documentElement).getPropertyValue('--c-black').trim(),
-                    text: getComputedStyle(document.documentElement).getPropertyValue('--c-sky-blue').trim(),
-                    border: '#333',
-                    headerBg: 'rgba(0, 0, 0, 0.9)',
-                    navBorder: getComputedStyle(document.documentElement).getPropertyValue('--c-sky-blue').trim(),
-                    logoFilter: 'invert(81%) sepia(15%) saturate(545%) hue-rotate(149deg) brightness(92%) contrast(91%)',
-                    iconFilter: 'invert(81%) sepia(15%) saturate(545%) hue-rotate(149deg) brightness(92%) contrast(91%)'
-                };
-
-                const lightColors = {
-                    bg: getComputedStyle(document.documentElement).getPropertyValue('--c-sky-blue').trim(),
-                    text: getComputedStyle(document.documentElement).getPropertyValue('--c-text-primary').trim(),
-                    border: '#EFEFEF',
-                    headerBg: 'rgba(255, 255, 255, 0.98)',
-                    headerBg: 'rgba(168, 213, 226, 0.9)',
-                    navBorder: '#EFEFEF',
-                    logoFilter: 'none',
-                    iconFilter: 'none',
-                    scrollTopBg: getComputedStyle(document.documentElement).getPropertyValue('--c-text-primary').trim(),
-                    scrollTopText: getComputedStyle(document.documentElement).getPropertyValue('--c-white').trim()
-                };
-
-                const targetColors = isDarkMode ? darkColors : lightColors;
-
-                // 헤더 GNB 색상 전환
-                gsap.to(".site-header", { backgroundColor: targetColors.headerBg, borderBottomColor: targetColors.border, duration: DURATION, ease: EASE });
-                gsap.to(".site-header .logo img", { filter: targetColors.logoFilter, duration: DURATION, ease: EASE });
-                gsap.to(".site-header nav", { borderColor: targetColors.navBorder, duration: DURATION, ease: EASE });
-                gsap.to(".site-header nav a", { color: targetColors.text, duration: DURATION, ease: EASE });
-                gsap.to(".site-header nav img", { filter: targetColors.iconFilter, duration: DURATION, ease: EASE });
-
-                // GSAP를 사용하여 색상 전환 애니메이션
-                gsap.to("#main-content, footer", {
-                    backgroundColor: targetColors.bg,
-                    color: targetColors.text,
-                    duration: DURATION,
-                    ease: EASE
+     <script>
+        // 페이지가 로드되면 실행
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. 'heavy-file.html' 파일 내용을 가져옵니다.
+            fetch('heavy-file.html')
+                .then(response => response.text()) // 텍스트로 변환
+                .then(htmlContent => {
+                    // 2. id="content-placeholder"인 div를 찾아서
+                    // 3. 그 안에 가져온 HTML 내용을 넣습니다.
+                    document.getElementById('content-placeholder').innerHTML = htmlContent;
+                })
+                .catch(error => {
+                    // 오류 발생 시
+                    console.error('파일을 불러오는 중 오류 발생:', error);
+                    document.getElementById('content-placeholder').innerHTML = '<p>콘텐츠를 불러오는데 실패했습니다.</p>';
                 });
-
-                gsap.to(".info-item, .info-section, footer", {
-                    borderColor: targetColors.border,
-                    duration: DURATION,
-                    ease: EASE
-                });
-
-                gsap.to(".info-section h2, .info-item h3, .info-item p", {
-                    color: targetColors.text,
-                    duration: DURATION,
-                    ease: EASE
-                });
-
-                // About 섹션 텍스트 및 테두리 색상 전환
-                gsap.to(".about-container p, .about-container h2", { color: targetColors.text, duration: DURATION, ease: EASE });
-                gsap.to(".image-box", { borderColor: targetColors.navBorder, duration: DURATION, ease: EASE });
-
-                // Scroll to Top 버튼 색상 전환
-                gsap.to("#scrollTopBtn", { 
-                    backgroundColor: targetColors.scrollTopBg, 
-                    color: targetColors.scrollTopText, 
-                    duration: DURATION, 
-                    ease: EASE 
-                });
-            });
-
-            // --- Scroll to Top 로직 ---
-            const scrollTopBtn = document.getElementById('scrollTopBtn');
-
-            window.onscroll = function() {
-                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                    scrollTopBtn.style.display = "block";
-                    gsap.to(scrollTopBtn, { autoAlpha: 1, duration: 0.3 });
-                } else {
-                    gsap.to(scrollTopBtn, { autoAlpha: 0, duration: 0.3, onComplete: () => {
-                        scrollTopBtn.style.display = "none";
-                    }});
-                }
-            };
-
-            scrollTopBtn.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
         });
     </script>
+    <button id="scrollTopBtn" title="Go to top">↑</button>
+
+    <script src="intro-animation.js"></script>
+    <script src="theme-transition.js"></script>
+    <script src="scroll-to-top.js"></script>
 </body>
 </html>
 </html>
