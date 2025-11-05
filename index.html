@@ -206,6 +206,7 @@
             height: 690px;
             border: 1px solid var(--c-sky-blue); /* 테두리 색상 변경 */
             box-sizing: border-box; /* 테두리를 크기에 포함 */
+            object-fit: cover; /* 이미지가 박스에 맞게 채워지도록 설정 */
         }
         .image-box-wrapper {
             position: relative; /* 자식 absolute 요소의 기준점 */
@@ -482,7 +483,7 @@
                         <div class="image-container">
                             <p>세상을 읽고</p>
                             <div class="image-box-wrapper">
-                                <div class="image-box"></div>
+                                <img src="images/poster.png" alt="Poster" class="image-box">
                                 <p>시각으로 답하다</p>
                                 <h2>Encoding</h2>
                             </div>
@@ -692,10 +693,11 @@
                 };
 
                 const lightColors = {
-                    bg: getComputedStyle(document.documentElement).getPropertyValue('--c-white').trim(),
+                    bg: getComputedStyle(document.documentElement).getPropertyValue('--c-sky-blue').trim(),
                     text: getComputedStyle(document.documentElement).getPropertyValue('--c-text-primary').trim(),
-                    border: getComputedStyle(document.documentElement).getPropertyValue('--c-light-gray').trim(),
+                    border: '#EFEFEF',
                     headerBg: 'rgba(255, 255, 255, 0.98)',
+                    headerBg: 'rgba(168, 213, 226, 0.9)',
                     navBorder: '#EFEFEF',
                     logoFilter: 'none',
                     iconFilter: 'none',
