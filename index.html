@@ -357,6 +357,28 @@
         @media (max-width: 480px) {
             .info-section h2 { font-size: 1.8rem; }
         }
+
+        /* Scroll to Top Button */
+        #scrollTopBtn {
+            display: none; /* 초기에는 숨김 */
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            border: none;
+            outline: none;
+            background-color: var(--c-sky-blue);
+            color: var(--c-black);
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            font-size: 24px;
+            width: 50px;
+            height: 50px;
+            line-height: 30px; /* 아이콘 수직 중앙 정렬 */
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
     </style>
     <style>
         /* --- 반응형 디자인을 위한 미디어 쿼리 --- */
@@ -551,6 +573,9 @@
         </footer>
     </div>
 
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" title="Go to top">↑</button>
+
     <script>
         // DOM 콘텐츠가 모두 로드되면 스크립트 실행
         document.addEventListener("DOMContentLoaded", () => {
@@ -673,7 +698,9 @@
                     headerBg: 'rgba(255, 255, 255, 0.98)',
                     navBorder: '#EFEFEF',
                     logoFilter: 'none',
-                    iconFilter: 'none'
+                    iconFilter: 'none',
+                    scrollTopBg: getComputedStyle(document.documentElement).getPropertyValue('--c-text-primary').trim(),
+                    scrollTopText: getComputedStyle(document.documentElement).getPropertyValue('--c-white').trim()
                 };
 
                 const targetColors = isDarkMode ? darkColors : lightColors;
@@ -708,6 +735,32 @@
                 // About 섹션 텍스트 및 테두리 색상 전환
                 gsap.to(".about-container p, .about-container h2", { color: targetColors.text, duration: DURATION, ease: EASE });
                 gsap.to(".image-box", { borderColor: targetColors.navBorder, duration: DURATION, ease: EASE });
+
+                // Scroll to Top 버튼 색상 전환
+                gsap.to("#scrollTopBtn", { 
+                    backgroundColor: targetColors.scrollTopBg, 
+                    color: targetColors.scrollTopText, 
+                    duration: DURATION, 
+                    ease: EASE 
+                });
+            });
+
+            // --- Scroll to Top 로직 ---
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+            window.onscroll = function() {
+                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                    scrollTopBtn.style.display = "block";
+                    gsap.to(scrollTopBtn, { autoAlpha: 1, duration: 0.3 });
+                } else {
+                    gsap.to(scrollTopBtn, { autoAlpha: 0, duration: 0.3, onComplete: () => {
+                        scrollTopBtn.style.display = "none";
+                    }});
+                }
+            };
+
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         });
     </script>
